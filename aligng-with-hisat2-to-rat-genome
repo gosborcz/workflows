@@ -1,0 +1,50 @@
+workflow align_to_rat_genome { call align_with_hisat2{}}
+
+
+
+task align_with_hisat2 {
+  File fastq1
+  File fastq2
+  String sample_name
+  String docker = "gosborcz/hisat2-samtools:v2"
+  Int cpu = 4
+
+  meta {
+    description: "HISAT2 alignment task will align paired-end fastq reads to reference genome."
+  }
+
+  parameter_meta {
+    fastq1: "gz forward fastq file"
+    fastq2: "gz reverse fastq file"
+    sample_name: "sample name of input/output"
+    docker: "(optional) the docker image containing the runtime environment for this task"
+    cpu: "(optional) the number of cpus to provision for this task"
+    }
+
+  command {
+    # Note that files MUST be gzipped or the module will not function properly
+    # This will be addressed in the future either by a change in how Hisat2 functions or a more
+    # robust test for compression type.
+
+    set -e
+
+    hisat2 \
+      -x genome \
+      -1 ${fastq1} \
+      -2 ${fastq2} \
+      -p ${cpu} \
+      --summary-file ${sample_name}.txt \
+      --dta-cufflinks | samtools sort -@ ${cpu} -o ${sample_name}.bam -
+
+  }
+
+  runtime {
+    docker: docker
+    cpu: cpu
+  }
+
+  output {
+    File log_file = "${sample_name}.txt"
+    File output_bam = "${sample_name}.bam"
+  }
+}
