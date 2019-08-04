@@ -33,7 +33,6 @@ ADD https://github.com/samtools/samtools/releases/download/${samtools_version}/s
 # extract files for the suite of tools
 RUN tar -xjf /usr/bin/samtools-${samtools_version}.tar.bz2 -C /usr/bin/
 
-
 # run make on the source
 
 RUN cd /usr/bin/samtools-${samtools_version}/ && ./configure
@@ -41,6 +40,7 @@ RUN cd /usr/bin/samtools-${samtools_version}/ && make
 RUN cd /usr/bin/samtools-${samtools_version}/ && make install
 
 # install hisat2
+
 WORKDIR /usr/local/bin
 RUN wget https://github.com/DaehwanKimLab/hisat2/archive/v${hisat2_version}.tar.gz
 RUN tar -xvzf v${hisat2_version}.tar.gz
@@ -50,4 +50,18 @@ RUN ln -s /usr/local/bin/hisat2-${hisat2_version}/hisat2 /usr/local/bin/hisat2
 ENV PATH /usr/local/bin/hisat2-${hisat2_version}hisatgenotype_scripts:${PATH}
 ENV PYTHONPATH /usr/local/bin/hisat2-${hisat2_version}/hisatgenotype_modules:${PYTHONPATH}
 
+# add indices for hisat2
+
+ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.1.ht2 /home
+ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.2.ht2 /home
+ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.3.ht2 /home
+ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.4.ht2 /home
+ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.5.ht2 /home
+ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.6.ht2 /home
+ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.7.ht2 /home
+ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.8.ht2 /home
+
+# set the workdir to be home
 WORKDIR /home
+
+
