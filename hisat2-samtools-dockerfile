@@ -50,6 +50,10 @@ RUN ln -s /usr/local/bin/hisat2-${hisat2_version}/hisat2 /usr/local/bin/hisat2
 ENV PATH /usr/local/bin/hisat2-${hisat2_version}hisatgenotype_scripts:${PATH}
 ENV PYTHONPATH /usr/local/bin/hisat2-${hisat2_version}/hisatgenotype_modules:${PYTHONPATH}
 
+
+# set the workdir to be home
+WORKDIR /home
+
 # add indices for hisat2
 
 ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.1.ht2 /home
@@ -61,7 +65,5 @@ ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.6.ht2 /home
 ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.7.ht2 /home
 ADD http://149.156.177.112/projects/ifpan-kinga-dieta/rn6-ind/genome.8.ht2 /home
 
-# set the workdir to be home
-WORKDIR /home
 
 
