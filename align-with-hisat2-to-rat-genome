@@ -1,7 +1,5 @@
 workflow align_to_rat_genome { call align_with_hisat2{}}
 
-
-
 task align_with_hisat2 {
   File fastq1
   File fastq2
@@ -29,7 +27,7 @@ task align_with_hisat2 {
     set -e
 
     hisat2 \
-      -x genome \
+      -x /home/genome \
       -1 ${fastq1} \
       -2 ${fastq2} \
       -p ${cpu} \
@@ -48,3 +46,4 @@ task align_with_hisat2 {
     File output_bam = "${sample_name}.bam"
   }
 }
+
