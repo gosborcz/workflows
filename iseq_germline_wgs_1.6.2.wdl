@@ -6,15 +6,15 @@ import "https://gitlab.com/intelliseq/workflows/raw/fq-bwa-align@1.4.0/src/main/
 import "https://gitlab.com/intelliseq/workflows/raw/bam-filter-contam@1.0.3/src/main/wdl/modules/bam-filter-contam/bam-filter-contam.wdl" as bam_filter_contam_module
 import "https://gitlab.com/intelliseq/workflows/raw/sv-calling@1.0.7/src/main/wdl/modules/sv-calling/sv-calling.wdl" as sv_calling_module
 import "https://gitlab.com/intelliseq/workflows/raw/bam-varcalling@1.2.1/src/main/wdl/modules/bam-varcalling/bam-varcalling.wdl" as bam_varcalling_module
-import "https://gitlab.com/intelliseq/workflows/raw/vcf-anno@1.7.1/src/main/wdl/modules/vcf-anno/vcf-anno.wdl" as vcf_anno_module
-import "https://gitlab.com/intelliseq/workflows/raw/vcf-acmg-report@1.1.6/src/main/wdl/modules/vcf-acmg-report/latest/vcf-acmg-report.wdl" as vcf_acmg_report_module
-import "https://gitlab.com/intelliseq/workflows/raw/bam-qc@2.2.0/src/main/wdl/modules/bam-qc/bam-qc.wdl" as bam_qc_module
-import "https://gitlab.com/intelliseq/workflows/raw/detection-chance@1.3.3/src/main/wdl/modules/detection-chance/latest/detection-chance.wdl" as detection_chance_module
-import "https://gitlab.com/intelliseq/workflows/raw/sex-check@1.0.2/src/main/wdl/modules/sex-check/sex-check.wdl" as sex_check_module
-import "https://gitlab.com/intelliseq/workflows/raw/vcf-var-filter@1.0.2/src/main/wdl/modules/vcf-var-filter/vcf-var-filter.wdl" as vcf_var_filter_module
-import "https://gitlab.com/intelliseq/workflows/raw/pdf-merge@1.1.1/src/main/wdl/tasks/pdf-merge/latest/pdf-merge.wdl" as pdf_merge_task
-import "https://gitlab.com/intelliseq/workflows/raw/bco-merge@1.4.0/src/main/wdl/tasks/bco-merge/latest/bco-merge.wdl" as bco_merge_task
-import "https://gitlab.com/intelliseq/workflows/raw/report-bco@1.0.1/src/main/wdl/tasks/report-bco/latest/report-bco.wdl" as report_bco_task
+# import "https://gitlab.com/intelliseq/workflows/raw/vcf-anno@1.7.1/src/main/wdl/modules/vcf-anno/vcf-anno.wdl" as vcf_anno_module
+# import "https://gitlab.com/intelliseq/workflows/raw/vcf-acmg-report@1.1.6/src/main/wdl/modules/vcf-acmg-report/latest/vcf-acmg-report.wdl" as vcf_acmg_report_module
+# import "https://gitlab.com/intelliseq/workflows/raw/bam-qc@2.2.0/src/main/wdl/modules/bam-qc/bam-qc.wdl" as bam_qc_module
+# import "https://gitlab.com/intelliseq/workflows/raw/detection-chance@1.3.3/src/main/wdl/modules/detection-chance/latest/detection-chance.wdl" as detection_chance_module
+# import "https://gitlab.com/intelliseq/workflows/raw/sex-check@1.0.2/src/main/wdl/modules/sex-check/sex-check.wdl" as sex_check_module
+# import "https://gitlab.com/intelliseq/workflows/raw/vcf-var-filter@1.0.2/src/main/wdl/modules/vcf-var-filter/vcf-var-filter.wdl" as vcf_var_filter_module
+# import "https://gitlab.com/intelliseq/workflows/raw/pdf-merge@1.1.1/src/main/wdl/tasks/pdf-merge/latest/pdf-merge.wdl" as pdf_merge_task
+# import "https://gitlab.com/intelliseq/workflows/raw/bco-merge@1.4.0/src/main/wdl/tasks/bco-merge/latest/bco-merge.wdl" as bco_merge_task
+# import "https://gitlab.com/intelliseq/workflows/raw/report-bco@1.0.1/src/main/wdl/tasks/report-bco/latest/report-bco.wdl" as report_bco_task
 
 workflow germline {
 
@@ -282,80 +282,80 @@ workflow germline {
     }
 
     # 8. Filter variants
-    call vcf_var_filter_module.vcf_var_filter {
-        input:
-            vcf_gz = bam_varcalling.vcf_gz,
-            vcf_gz_tbi = bam_varcalling.vcf_gz_tbi,
-            sample_id = sample_id,
-            interval_list = interval_file,
-            apply_ad_filter = apply_ad_filter,
-            ad_binom_threshold = ad_binom_threshold,
-            analysis_type = genome_or_exome
-    }
+    # call vcf_var_filter_module.vcf_var_filter {
+    #    input:
+    #        vcf_gz = bam_varcalling.vcf_gz,
+    #        vcf_gz_tbi = bam_varcalling.vcf_gz_tbi,
+    #        sample_id = sample_id,
+    #        interval_list = interval_file,
+    #        apply_ad_filter = apply_ad_filter,
+    #        ad_binom_threshold = ad_binom_threshold,
+    #        analysis_type = genome_or_exome
+    # }
 
     # 9. Annotate and filter variants
-    call vcf_anno_module.vcf_anno {
-        input:
-            vcf_gz = vcf_var_filter.filtered_vcf_gz,
-            vcf_gz_tbi = vcf_var_filter.filtered_vcf_gz_tbi,
-            vcf_anno_freq_genome_or_exome = genome_or_exome,
-            gnomad_coverage_genome_or_exome = genome_or_exome,
-            vcf_basename = sample_id
-    }
+    # call vcf_anno_module.vcf_anno {
+    #    input:
+    #        vcf_gz = vcf_var_filter.filtered_vcf_gz,
+    #        vcf_gz_tbi = vcf_var_filter.filtered_vcf_gz_tbi,
+    #        vcf_anno_freq_genome_or_exome = genome_or_exome,
+    #        gnomad_coverage_genome_or_exome = genome_or_exome,
+    #        vcf_basename = sample_id
+    #}
 
     # 10. Annotate variants acroding to ACMG recomendation
-    call vcf_acmg_report_module.vcf_acmg_report {
-        input:
-            panel_json = gene_panel_json,
-            phenotypes_json = gene_phenotypes_json,
-            sample_json = sample_json,
-            patient_json = patient_json,
-            vcf_gz = vcf_anno.annotated_and_filtered_vcf,
-            vcf_gz_tbi = vcf_anno.annotated_and_filtered_vcf_tbi,
-            bam = bam_to_var_calling,
-            bai = bai_to_var_calling,
-            realigned_bam = bam_varcalling.haplotype_caller_bam,
-            realigned_bai = bam_varcalling.haplotype_caller_bai,
-            other_bams = other_bams,
-            other_bais = other_bais,
-            sample_id = sample_id,
-            genome_or_exome = genome_or_exome
-    }
+    # call vcf_acmg_report_module.vcf_acmg_report {
+    #     input:
+    #        panel_json = gene_panel_json,
+    #        phenotypes_json = gene_phenotypes_json,
+    #        sample_json = sample_json,
+    #        patient_json = patient_json,
+    #        vcf_gz = vcf_anno.annotated_and_filtered_vcf,
+    #        vcf_gz_tbi = vcf_anno.annotated_and_filtered_vcf_tbi,
+    #       bam = bam_to_var_calling,
+    #        bai = bai_to_var_calling,
+    #        realigned_bam = bam_varcalling.haplotype_caller_bam,
+    #        realigned_bai = bam_varcalling.haplotype_caller_bai,
+    #        other_bams = other_bams,
+    #        other_bais = other_bais,
+    #        sample_id = sample_id,
+    #        genome_or_exome = genome_or_exome
+    #}
 
     # 11. Call structural variants
-    if (add_snp_data_to_sv) {
-        File? vcf_to_sv = vcf_var_filter.filtered_vcf_gz
-        File? vcf_tbi_to_sv = vcf_var_filter.filtered_vcf_gz_tbi
-    }
+    # if (add_snp_data_to_sv) {
+    #    File? vcf_to_sv = vcf_var_filter.filtered_vcf_gz
+    #    File? vcf_tbi_to_sv = vcf_var_filter.filtered_vcf_gz_tbi
+    # }
 
-    if(genome_or_exome == "genome" && run_sv_calling) {
+    # if(genome_or_exome == "genome" && run_sv_calling) {
 
-        call sv_calling_module.sv_calling {
-            input:
-                del_cov_max = del_cov_max,
-                dup_cov_min = dup_cov_min,
-                del_cov_gcbin_max = del_cov_gcbin_max,
-                dup_cov_gcbin_min = dup_cov_gcbin_min,
-                create_pictures = true,
-                exclude_lcr = exclude_lcr,
-                bam = bam_to_var_calling,
-                bai = bai_to_var_calling,
-                vcf_gz = vcf_to_sv,
-                vcf_gz_tbi = vcf_tbi_to_sv,
-                gene_panel = gene_panel_json,
-                sample_id = sample_id
-        }
-    }
+    #    call sv_calling_module.sv_calling {
+    #        input:
+    #            del_cov_max = del_cov_max,
+    #            dup_cov_min = dup_cov_min,
+    #            del_cov_gcbin_max = del_cov_gcbin_max,
+    #            dup_cov_gcbin_min = dup_cov_gcbin_min,
+    #            create_pictures = true,
+    #            exclude_lcr = exclude_lcr,
+    #            bam = bam_to_var_calling,
+    #            bai = bai_to_var_calling,
+    #            vcf_gz = vcf_to_sv,
+    #            vcf_gz_tbi = vcf_tbi_to_sv,
+    #            gene_panel = gene_panel_json,
+    #            sample_id = sample_id
+    #    }
+    # }
 
     # 12. Estimate detection chance
-    call detection_chance_module.detection_chance {
-        input:
-            sample_gvcf_gz = bam_varcalling.gvcf_gz,
-            sample_gvcf_gz_tbi = bam_varcalling.gvcf_gz_tbi,
-            panel_json = gene_panel_json,
-            bam = bam_varcalling.haplotype_caller_bam,
-            bai = bam_varcalling.haplotype_caller_bai
-    }
+    # call detection_chance_module.detection_chance {
+    #    input:
+    #        sample_gvcf_gz = bam_varcalling.gvcf_gz,
+    #        sample_gvcf_gz_tbi = bam_varcalling.gvcf_gz_tbi,
+    #        panel_json = gene_panel_json,
+    #        bam = bam_varcalling.haplotype_caller_bam,
+    #        bai = bam_varcalling.haplotype_caller_bai
+    # }
 
     # 13. Check quality of bam files
     call bam_qc_module.bam_qc {
@@ -368,14 +368,14 @@ workflow germline {
     }
 
     # 14. Genetic sex verification
-    call sex_check_module.sex_check {
-        input:
-            bam = bam_to_var_calling,
-            bai = bai_to_var_calling,
-            vcf_gz = bam_varcalling.vcf_gz,
-            vcf_gz_tbi = bam_varcalling.vcf_gz_tbi,
-            sample_id = sample_id
-    }
+    # call sex_check_module.sex_check {
+    #    input:
+    #        bam = bam_to_var_calling,
+    #        bai = bai_to_var_calling,
+    #        vcf_gz = bam_varcalling.vcf_gz,
+    #        vcf_gz_tbi = bam_varcalling.vcf_gz_tbi,
+    #        sample_id = sample_id
+    # }
 
     #  # 15. Merge pdf reports
     #  Array[File] reports_pdf = [vcf_acmg_report.pdf_report, fq_qc.quality_check_report_pdf, sex_check.report_pdf]
@@ -430,48 +430,48 @@ workflow germline {
         File? final_realigned_bai = bam_varcalling.haplotype_caller_bai
 
         # 8. Filter variants
-        File? filtered_vcf_gz = vcf_var_filter.filtered_vcf_gz
-        File? filtered_vcf_gz_tbi = vcf_var_filter.filtered_vcf_gz_tbi
+        # File? filtered_vcf_gz = vcf_var_filter.filtered_vcf_gz
+        # File? filtered_vcf_gz_tbi = vcf_var_filter.filtered_vcf_gz_tbi
 
-        Array[File]?  rejected_variants_vcfs = vcf_var_filter.rejected_variants_vcfs
-        Array[File]?  rejected_variants_tbis = vcf_var_filter.rejected_variants_tbis
+        # Array[File]?  rejected_variants_vcfs = vcf_var_filter.rejected_variants_vcfs
+        # Array[File]?  rejected_variants_tbis = vcf_var_filter.rejected_variants_tbis
 
-        File? detail_metrics_file = vcf_var_filter.detail_metrics_file
-        File? summary_metrics_file = vcf_var_filter.summary_metrics_file
+        # File? detail_metrics_file = vcf_var_filter.detail_metrics_file
+        # File? summary_metrics_file = vcf_var_filter.summary_metrics_file
 
 
         # 9. Annotate and filter variants
-        File annotated_vcf = vcf_anno.annotated_and_filtered_vcf
-        File annotated_vcf_tbi = vcf_anno.annotated_and_filtered_vcf_tbi
-
+        # File annotated_vcf = vcf_anno.annotated_and_filtered_vcf
+        # File annotated_vcf_tbi = vcf_anno.annotated_and_filtered_vcf_tbi
+ 
         # 10. Annotate variants acroding to ACMG recomendation
-        File annotated_acmg_vcf_gz = vcf_acmg_report.annotated_acmg_vcf_gz
-        File annotated_acmg_vcf_gz_tbi = vcf_acmg_report.annotated_acmg_vcf_gz_tbi
-        File igv_screenshots_tar_gz = vcf_acmg_report.igv_screenshots_tar_gz
-        File csv_report = vcf_acmg_report.csv_report
+        # File annotated_acmg_vcf_gz = vcf_acmg_report.annotated_acmg_vcf_gz
+        # File annotated_acmg_vcf_gz_tbi = vcf_acmg_report.annotated_acmg_vcf_gz_tbi
+        # File igv_screenshots_tar_gz = vcf_acmg_report.igv_screenshots_tar_gz
+        # File csv_report = vcf_acmg_report.csv_report
 
-        File pdf_report = vcf_acmg_report.pdf_report
-        File html_report = vcf_acmg_report.html_report
+        # File pdf_report = vcf_acmg_report.pdf_report
+        # File html_report = vcf_acmg_report.html_report
 
-        File ang_pdf_report = vcf_acmg_report.ang_pdf_report
-        File ang_html_report = vcf_acmg_report.ang_html_report
+        # File ang_pdf_report = vcf_acmg_report.ang_pdf_report
+        # File ang_html_report = vcf_acmg_report.ang_html_report
 
         # 11. Call structural variants
-        File? sv_vcf = sv_calling.sv_vcf
-        File? sv_vcf_tbi = sv_calling.sv_vcf_tbi
-        File? bam_stats_json = sv_calling.bam_stats_json
-        File? sv_csv = sv_calling.csv_report
+        # File? sv_vcf = sv_calling.sv_vcf
+        # File? sv_vcf_tbi = sv_calling.sv_vcf_tbi
+        # File? bam_stats_json = sv_calling.bam_stats_json
+        # File? sv_csv = sv_calling.csv_report
 
-        File? annotated_sv_vcf_gz = sv_calling.annotated_sv_vcf_gz
-        File? annotated_sv_vcf_gz_tbi = sv_calling.annotated_sv_vcf_gz_tbi
-        Array[File]? annotated_tsv_gz = sv_calling.annotated_tsv_gz
-        File? user_gene_file = sv_calling.user_gene_file
+        # File? annotated_sv_vcf_gz = sv_calling.annotated_sv_vcf_gz
+        # File? annotated_sv_vcf_gz_tbi = sv_calling.annotated_sv_vcf_gz_tbi
+        # Array[File]? annotated_tsv_gz = sv_calling.annotated_tsv_gz
+        # File? user_gene_file = sv_calling.user_gene_file
 
-        File? annotated_filtered_sv_vcf_gz = sv_calling.annotated_filtered_sv_vcf_gz
-        File? annotated_filtered_sv_vcf_gz_tbi = sv_calling.annotated_filtered_sv_vcf_gz_tbi
+        # File? annotated_filtered_sv_vcf_gz = sv_calling.annotated_filtered_sv_vcf_gz
+        # File? annotated_filtered_sv_vcf_gz_tbi = sv_calling.annotated_filtered_sv_vcf_gz_tbi
 
-        Array[File]? igv_html = sv_calling.igv_html
-        Array[File]? igv_pngs = sv_calling.igv_pngs
+        # Array[File]? igv_html = sv_calling.igv_html
+        # Array[File]? igv_pngs = sv_calling.igv_pngs
 
         # 12. Estimate detection chance
         File detection_chance_report_pdf = detection_chance.detection_chance_report_pdf
@@ -486,8 +486,8 @@ workflow germline {
         File coverage_report_html = bam_qc.coverage_report_html
 
         # 14. Genetic sex verification
-        File sex_check_report_html = sex_check.report_html
-        File sex_check_report_pdf = sex_check.report_pdf
+        # File sex_check_report_html = sex_check.report_html
+        # File sex_check_report_pdf = sex_check.report_pdf
 
         # 15. Merge pdf reports
         #    File full_report_pdf = pdf_merge.full_report_pdf
