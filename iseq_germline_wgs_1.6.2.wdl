@@ -6,15 +6,15 @@ import "https://gitlab.com/intelliseq/workflows/raw/fq-bwa-align@1.4.0/src/main/
 import "https://gitlab.com/intelliseq/workflows/raw/bam-filter-contam@1.0.3/src/main/wdl/modules/bam-filter-contam/bam-filter-contam.wdl" as bam_filter_contam_module
 import "https://gitlab.com/intelliseq/workflows/raw/sv-calling@1.0.7/src/main/wdl/modules/sv-calling/sv-calling.wdl" as sv_calling_module
 import "https://gitlab.com/intelliseq/workflows/raw/bam-varcalling@1.2.1/src/main/wdl/modules/bam-varcalling/bam-varcalling.wdl" as bam_varcalling_module
-# import "https://gitlab.com/intelliseq/workflows/raw/vcf-anno@1.7.1/src/main/wdl/modules/vcf-anno/vcf-anno.wdl" as vcf_anno_module
-# import "https://gitlab.com/intelliseq/workflows/raw/vcf-acmg-report@1.1.6/src/main/wdl/modules/vcf-acmg-report/latest/vcf-acmg-report.wdl" as vcf_acmg_report_module
-# import "https://gitlab.com/intelliseq/workflows/raw/bam-qc@2.2.0/src/main/wdl/modules/bam-qc/bam-qc.wdl" as bam_qc_module
-# import "https://gitlab.com/intelliseq/workflows/raw/detection-chance@1.3.3/src/main/wdl/modules/detection-chance/latest/detection-chance.wdl" as detection_chance_module
-# import "https://gitlab.com/intelliseq/workflows/raw/sex-check@1.0.2/src/main/wdl/modules/sex-check/sex-check.wdl" as sex_check_module
-# import "https://gitlab.com/intelliseq/workflows/raw/vcf-var-filter@1.0.2/src/main/wdl/modules/vcf-var-filter/vcf-var-filter.wdl" as vcf_var_filter_module
-# import "https://gitlab.com/intelliseq/workflows/raw/pdf-merge@1.1.1/src/main/wdl/tasks/pdf-merge/latest/pdf-merge.wdl" as pdf_merge_task
-# import "https://gitlab.com/intelliseq/workflows/raw/bco-merge@1.4.0/src/main/wdl/tasks/bco-merge/latest/bco-merge.wdl" as bco_merge_task
-# import "https://gitlab.com/intelliseq/workflows/raw/report-bco@1.0.1/src/main/wdl/tasks/report-bco/latest/report-bco.wdl" as report_bco_task
+import "https://gitlab.com/intelliseq/workflows/raw/vcf-anno@1.7.1/src/main/wdl/modules/vcf-anno/vcf-anno.wdl" as vcf_anno_module
+import "https://gitlab.com/intelliseq/workflows/raw/vcf-acmg-report@1.1.6/src/main/wdl/modules/vcf-acmg-report/latest/vcf-acmg-report.wdl" as vcf_acmg_report_module
+import "https://gitlab.com/intelliseq/workflows/raw/bam-qc@2.2.0/src/main/wdl/modules/bam-qc/bam-qc.wdl" as bam_qc_module
+import "https://gitlab.com/intelliseq/workflows/raw/detection-chance@1.3.3/src/main/wdl/modules/detection-chance/latest/detection-chance.wdl" as detection_chance_module
+import "https://gitlab.com/intelliseq/workflows/raw/sex-check@1.0.2/src/main/wdl/modules/sex-check/sex-check.wdl" as sex_check_module
+import "https://gitlab.com/intelliseq/workflows/raw/vcf-var-filter@1.0.2/src/main/wdl/modules/vcf-var-filter/vcf-var-filter.wdl" as vcf_var_filter_module
+import "https://gitlab.com/intelliseq/workflows/raw/pdf-merge@1.1.1/src/main/wdl/tasks/pdf-merge/latest/pdf-merge.wdl" as pdf_merge_task
+import "https://gitlab.com/intelliseq/workflows/raw/bco-merge@1.4.0/src/main/wdl/tasks/bco-merge/latest/bco-merge.wdl" as bco_merge_task
+import "https://gitlab.com/intelliseq/workflows/raw/report-bco@1.0.1/src/main/wdl/tasks/report-bco/latest/report-bco.wdl" as report_bco_task
 
 workflow germline {
 
