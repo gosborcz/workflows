@@ -389,23 +389,23 @@ workflow germline {
     #  }
 
     # 16. Merge BCO and prepare report pdf
-    Array[File] bcos_module = select_all([panel_generate.bco, panel_generate_acmg_panel.bco, resources_kit.bco, fq_organize.bco, fq_qc.bco, fq_bwa_align.bco, bam_filter_contam.bco, bam_varcalling.bco, vcf_var_filter.bco, vcf_anno.bco, vcf_acmg_report.bco, sv_calling.bco, sex_check.bco, detection_chance.bco])
-    Array[File] stdout_module = select_all([panel_generate.stdout_log, panel_generate_acmg_panel.stdout_log, resources_kit.stdout_log,  fq_organize.stdout_log, fq_qc.stdout_log, fq_bwa_align.stdout_log, bam_filter_contam.stdout_log, bam_varcalling.stdout_log, vcf_var_filter.stdout_log, vcf_anno.stdout_log, vcf_acmg_report.stdout_log, sv_calling.stdout_log, sex_check.stdout_log, detection_chance.stdout_log])
-    Array[File] stderr_module = select_all([panel_generate.stderr_log, panel_generate_acmg_panel.stderr_log, resources_kit.stderr_log, fq_organize.stderr_log, fq_qc.stderr_log, fq_bwa_align.stderr_log, bam_filter_contam.stderr_log, bam_varcalling.stderr_log, vcf_var_filter.stderr_log, vcf_anno.stderr_log, vcf_acmg_report.stderr_log, sv_calling.stderr_log, sex_check.stderr_log, detection_chance.stderr_log])
+    # Array[File] bcos_module = select_all([panel_generate.bco, panel_generate_acmg_panel.bco, resources_kit.bco, fq_organize.bco, fq_qc.bco, fq_bwa_align.bco, bam_filter_contam.bco, bam_varcalling.bco, vcf_var_filter.bco, vcf_anno.bco, vcf_acmg_report.bco, sv_calling.bco, sex_check.bco, detection_chance.bco])
+    # Array[File] stdout_module = select_all([panel_generate.stdout_log, panel_generate_acmg_panel.stdout_log, resources_kit.stdout_log,  fq_organize.stdout_log, fq_qc.stdout_log, fq_bwa_align.stdout_log, bam_filter_contam.stdout_log, bam_varcalling.stdout_log, vcf_var_filter.stdout_log, vcf_anno.stdout_log, vcf_acmg_report.stdout_log, sv_calling.stdout_log, sex_check.stdout_log, detection_chance.stdout_log])
+    # Array[File] stderr_module = select_all([panel_generate.stderr_log, panel_generate_acmg_panel.stderr_log, resources_kit.stderr_log, fq_organize.stderr_log, fq_qc.stderr_log, fq_bwa_align.stderr_log, bam_filter_contam.stderr_log, bam_varcalling.stderr_log, vcf_var_filter.stderr_log, vcf_anno.stderr_log, vcf_acmg_report.stderr_log, sv_calling.stderr_log, sex_check.stderr_log, detection_chance.stderr_log])
 
-    call bco_merge_task.bco_merge as bco_merge_pipeline {
-        input:
-            bco_array = bcos_module,
-            stdout_array = stdout_module,
-            stderr_array = stderr_module,
-            pipeline_name = pipeline_name,
-            pipeline_version = pipeline_version
-    }
+    # call bco_merge_task.bco_merge as bco_merge_pipeline {
+    #    input:
+    #        bco_array = bcos_module,
+    #        stdout_array = stdout_module,
+    #        stderr_array = stderr_module,
+    #        pipeline_name = pipeline_name,
+    #        pipeline_version = pipeline_version
+    # }
 
-    call report_bco_task.report_bco as report_bco_pipeline {
-        input:
-            bco_json = bco_merge_pipeline.bco
-    }
+    # call report_bco_task.report_bco as report_bco_pipeline {
+    #    input:
+    #        bco_json = bco_merge_pipeline.bco
+    # }
 
     output {
 
@@ -495,11 +495,11 @@ workflow germline {
         #    Array[File] all_reports_pdf = pdf_merge.all_reports_pdf
 
         # 16. Merge BCO and prepare report pdf
-        File bco = bco_merge_pipeline.bco
-        File bco_report_html = report_bco_pipeline.bco_report_html
-        File bco_report_pdf = report_bco_pipeline.bco_report_pdf
-        File stdout_log = bco_merge_pipeline.stdout_log
-        File stderr_log = bco_merge_pipeline.stderr_log
+        # File bco = bco_merge_pipeline.bco
+        # File bco_report_html = report_bco_pipeline.bco_report_html
+        # File bco_report_pdf = report_bco_pipeline.bco_report_pdf
+        # File stdout_log = bco_merge_pipeline.stdout_log
+        # File stderr_log = bco_merge_pipeline.stderr_log
 
     }
 }
