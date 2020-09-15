@@ -347,15 +347,15 @@ workflow germline {
     #    }
     # }
 
-    # 12. Estimate detection chance
-    # call detection_chance_module.detection_chance {
-    #    input:
-    #        sample_gvcf_gz = bam_varcalling.gvcf_gz,
-    #        sample_gvcf_gz_tbi = bam_varcalling.gvcf_gz_tbi,
-    #        panel_json = gene_panel_json,
-    #        bam = bam_varcalling.haplotype_caller_bam,
-    #        bai = bam_varcalling.haplotype_caller_bai
-    # }
+    12. Estimate detection chance
+     call detection_chance_module.detection_chance {
+        input:
+            sample_gvcf_gz = bam_varcalling.gvcf_gz,
+            sample_gvcf_gz_tbi = bam_varcalling.gvcf_gz_tbi,
+            panel_json = gene_panel_json,
+            bam = bam_varcalling.haplotype_caller_bam,
+            bai = bam_varcalling.haplotype_caller_bai
+     }
 
     # 13. Check quality of bam files
     call bam_qc_module.bam_qc {
