@@ -347,7 +347,7 @@ workflow germline {
     #    }
     # }
 
-    12. Estimate detection chance
+    # 12. Estimate detection chance
      call detection_chance_module.detection_chance {
         input:
             sample_gvcf_gz = bam_varcalling.gvcf_gz,
