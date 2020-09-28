@@ -191,29 +191,29 @@ workflow germline {
     String pipeline_version = "1.7.3"
 
     # 1. Prepare gene panel or use user defined
-    if(is_input_for_panel_generate_defined && !is_panel_json_defined) {
-        call panel_generate_task.panel_generate {
-            input:
-                sample_id = sample_id,
-                hpo_terms = hpo_terms,
-                genes = genes,
-                diseases = diseases,
-                phenotypes_description = phenotypes_description,
-                panel_names = panel_names
-        }
-    }
+    # if(is_input_for_panel_generate_defined && !is_panel_json_defined) {
+    #    call panel_generate_task.panel_generate {
+    #        input:
+    #            sample_id = sample_id,
+    #            hpo_terms = hpo_terms,
+    #            genes = genes,
+    #            diseases = diseases,
+    #            phenotypes_description = phenotypes_description,
+    #            panel_names = panel_names
+    #    }
+    #}
 
     # Use acmg gene panel if panel and panels inputs are not defined
-    if(!is_input_for_panel_generate_defined && !is_panel_json_defined) {
-        call panel_generate_task.panel_generate as panel_generate_acmg_panel {
-            input:
-                sample_id = sample_id,
-                panel_names = ["acmg-recommendation-panel"]
-        }
-    }
+    #if(!is_input_for_panel_generate_defined && !is_panel_json_defined) {
+    #    call panel_generate_task.panel_generate as panel_generate_acmg_panel {
+    #        input:
+    #            sample_id = sample_id,
+    #            panel_names = ["acmg-recommendation-panel"]
+    #    }
+    #}
 
-    File gene_panel_json = select_first([panel_json, panel_generate.panel, panel_generate_acmg_panel.panel])
-    File gene_phenotypes_json = select_first([phenotypes_json, panel_generate.phenotypes, panel_generate_acmg_panel.phenotypes])
+    # File gene_panel_json = select_first([panel_json, panel_generate.panel, panel_generate_acmg_panel.panel])
+    # File gene_phenotypes_json = select_first([phenotypes_json, panel_generate.phenotypes, panel_generate_acmg_panel.phenotypes])
 
     # 2. Prepare interval_list
     if(is_interval_list_not_defined) {
