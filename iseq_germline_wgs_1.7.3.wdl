@@ -348,15 +348,15 @@ workflow germline {
     #}
 
     # 12. Estimate detection chance
-    call detection_chance_module.detection_chance {
-        input:
-            sample_id = sample_id,
-            sample_gvcf_gz = bam_varcalling.gvcf_gz,
-            sample_gvcf_gz_tbi = bam_varcalling.gvcf_gz_tbi,
-            panel_json = gene_panel_json,
-            bam = bam_to_var_calling,
-            bai = bai_to_var_calling
-    }
+    # call detection_chance_module.detection_chance {
+    #    input:
+    #        sample_id = sample_id,
+    #        sample_gvcf_gz = bam_varcalling.gvcf_gz,
+    #        sample_gvcf_gz_tbi = bam_varcalling.gvcf_gz_tbi,
+    #        panel_json = gene_panel_json,
+    #        bam = bam_to_var_calling,
+    #        bai = bai_to_var_calling
+    # }
 
     # 13. Check quality of bam files
     call bam_qc_module.bam_qc {
@@ -476,10 +476,10 @@ workflow germline {
         # File? igv_pngs = sv_calling.igv_pngs
 
         # 12. Estimate detection chance
-        File detection_chance_report_pdf = detection_chance.detection_chance_report_pdf
-        File detection_chance_report_odt = detection_chance.detection_chance_report_odt
-        File detection_chance_report_docx = detection_chance.detection_chance_report_docx
-        File detection_chance_report_html = detection_chance.detection_chance_report_html
+        # File detection_chance_report_pdf = detection_chance.detection_chance_report_pdf
+        # File detection_chance_report_odt = detection_chance.detection_chance_report_odt
+        # File detection_chance_report_docx = detection_chance.detection_chance_report_docx
+        # File detection_chance_report_html = detection_chance.detection_chance_report_html
 
         # 13. Check quality of bam files
         File coverage_report_pdf = bam_qc.coverage_report_pdf
