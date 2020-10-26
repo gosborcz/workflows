@@ -1,20 +1,19 @@
 import "https://gitlab.com/intelliseq/workflows/raw/fq-organize@1.1.4/src/main/wdl/tasks/fq-organize/fq-organize.wdl" as fq_organize_task
-import "https://gitlab.com/intelliseq/workflows/raw/panel-generate@1.6.5/src/main/wdl/tasks/panel-generate/panel-generate.wdl" as panel_generate_task
+import "https://gitlab.com/intelliseq/workflows/raw/panel-generate@1.6.8/src/main/wdl/tasks/panel-generate/panel-generate.wdl" as panel_generate_task
 import "https://gitlab.com/intelliseq/workflows/raw/resources-kit@1.0.1/src/main/wdl/tasks/resources-kit/resources-kit.wdl" as resources_kit_task
 import "https://gitlab.com/intelliseq/workflows/raw/fq-qc@1.4.1/src/main/wdl/modules/fq-qc/fq-qc.wdl" as fq_qc_module
 import "https://gitlab.com/intelliseq/workflows/raw/fq-bwa-align@1.4.1/src/main/wdl/modules/fq-bwa-align/latest/fq-bwa-align.wdl" as fq_bwa_align_module
 import "https://gitlab.com/intelliseq/workflows/raw/bam-filter-contam@1.0.4/src/main/wdl/modules/bam-filter-contam/bam-filter-contam.wdl" as bam_filter_contam_module
 import "https://gitlab.com/intelliseq/workflows/raw/sv-calling@1.0.8/src/main/wdl/modules/sv-calling/sv-calling.wdl" as sv_calling_module
-import "https://gitlab.com/intelliseq/workflows/raw/bam-varcalling@1.3.0/src/main/wdl/modules/bam-varcalling/bam-varcalling.wdl" as bam_varcalling_module
-import "https://gitlab.com/intelliseq/workflows/raw/vcf-anno@1.7.1/src/main/wdl/modules/vcf-anno/vcf-anno.wdl" as vcf_anno_module
-import "https://gitlab.com/intelliseq/workflows/raw/vcf-acmg-report@1.1.9/src/main/wdl/modules/vcf-acmg-report/latest/vcf-acmg-report.wdl" as vcf_acmg_report_module
-import "https://gitlab.com/intelliseq/workflows/raw/bam-qc@2.2.2/src/main/wdl/modules/bam-qc/bam-qc.wdl" as bam_qc_module
-import "https://gitlab.com/intelliseq/workflows/raw/detection-chance@1.3.9/src/main/wdl/modules/detection-chance/latest/detection-chance.wdl" as detection_chance_module
+import "https://gitlab.com/intelliseq/workflows/raw/bam-varcalling@1.3.2/src/main/wdl/modules/bam-varcalling/bam-varcalling.wdl" as bam_varcalling_module
+import "https://gitlab.com/intelliseq/workflows/raw/vcf-anno@1.8.2/src/main/wdl/modules/vcf-anno/vcf-anno.wdl" as vcf_anno_module
+import "https://gitlab.com/intelliseq/workflows/raw/vcf-acmg-report@1.1.10/src/main/wdl/modules/vcf-acmg-report/latest/vcf-acmg-report.wdl" as vcf_acmg_report_module
+import "https://gitlab.com/intelliseq/workflows/raw/bam-qc@2.3.1/src/main/wdl/modules/bam-qc/bam-qc.wdl" as bam_qc_module
+import "https://gitlab.com/intelliseq/workflows/raw/detection-chance@1.3.13/src/main/wdl/modules/detection-chance/detection-chance.wdl" as detection_chance_module
 import "https://gitlab.com/intelliseq/workflows/raw/sex-check@1.0.2/src/main/wdl/modules/sex-check/sex-check.wdl" as sex_check_module
 import "https://gitlab.com/intelliseq/workflows/raw/vcf-var-filter@1.0.2/src/main/wdl/modules/vcf-var-filter/vcf-var-filter.wdl" as vcf_var_filter_module
 import "https://gitlab.com/intelliseq/workflows/raw/pdf-merge@1.1.1/src/main/wdl/tasks/pdf-merge/latest/pdf-merge.wdl" as pdf_merge_task
-import "https://gitlab.com/intelliseq/workflows/raw/bco-merge@1.4.0/src/main/wdl/tasks/bco-merge/latest/bco-merge.wdl" as bco_merge_task
-import "https://gitlab.com/intelliseq/workflows/raw/report-bco@1.0.1/src/main/wdl/tasks/report-bco/latest/report-bco.wdl" as report_bco_task
+import "https://gitlab.com/intelliseq/workflows/raw/bco@1.0.0/src/main/wdl/modules/bco/bco.wdl" as bco_module
 
 workflow germline {
 
@@ -28,6 +27,7 @@ workflow germline {
         variant1_name: 'WES hereditary disorders ACMG report'
         variant1_description: 'Identifies pathogenic variants (according to the ACMG classification) with the ready-to-use or custom gene panels; generates full clinical report; for whole exome sequencing data (WES).'
 
+        variant1_input_fastqs: '{"index": 2, "name": "Fastq files", "required": "true", "paired": "true", "type": "Array[File]", "extension": [".fq.gz", ".fastq.gz"], "description": "Choose list of paired gzipped fastq files both left and right [.fq.gz or .fastq.gz]"}'
         variant1_input_genes: '{"index": 5, "name": "Genes names", "type": "String", "groupname": "gene_panel", "description": "Enter gene names to narrow your search/analysis results (separate gene names with comma, for example: HTT, FBN1)"}'
         variant1_input_genome_or_exome: '{"hidden":"true", "name": "Sample type", "type": "String", "default": "exome", "constraints": {"values": ["exome", "genome"]}, "description": "Select exome or genome (refers to the input sample)"}'
         variant1_input_run_sv_calling: '{"hidden":"true", "name": "Run SV calling", "type": "Boolean", "default": false, "description": "Select if run SV calling"}'
@@ -37,15 +37,17 @@ workflow germline {
         variant2_name: 'WES demo ACMG report'
         variant2_description: 'Demo: identifies pathogenic variants (according to the ACMG classification); generates full clinical report; for whole exome sequencing data (WES).'
 
+        variant2_input_fastqs: '{"index": 2, "name": "Fastq files", "required": "true", "paired": "true", "type": "Array[File]", "extension": [".fq.gz", ".fastq.gz"], "description": "Choose list of paired gzipped fastq files both left and right [.fq.gz or .fastq.gz]"}'
         variant2_input_genes: '{"index": 5, "name": "Genes names", "type": "String", "groupname": "gene_panel", "default": "GNE", "description": "Enter gene names to narrow your search/analysis results (separate gene names with comma, for example: HTT, FBN1)"}'
         variant2_input_genome_or_exome: '{"hidden":"true", "name": "Sample type", "type": "String", "default": "exome", "constraints": {"values": ["exome", "genome"]}, "description": "Select exome or genome (refers to the input sample)"}'
         variant2_input_run_sv_calling: '{"hidden":"true", "name": "Run SV calling", "type": "Boolean", "default": false, "description": "Select if run SV callung"}'
         variant2_input_kit: '{"index": 8, "advanced":"true", "name": "Kit", "type": "Array[String]", "default": "exome-v7", "constraints": {"values": ["exome-v6", "exome-v7"], "multiselect": false}, "description": "Choose comprehensive exome kit from exome-v6 for Agilent SureSelect Human All Exon V6 or exome-v7 for Agilent SureSelect Human All Exon V7"}'
-        variant2_input_interval_list: '{"index": 9, "hidden":"true", "name": "Intervals", "type": "File", "extension": ["interval_list"], "description": "List of genomic intervals"}'
+        variant2_input_interval_list: '{"index": 9, "hidden":"true", "name": "Intervals", "type": "File", "extension": [".interval_list"], "description": "List of genomic intervals"}'
 
         variant3_name: 'WGS hereditary disorders ACMG report'
         variant3_description: 'Identifies pathogenic variants (according to the ACMG classification) with the ready-to-use or custom gene panels; generates full clinical report; for whole genome sequencing data (WGS).'
 
+        variant3_input_fastqs: '{"index": 2, "name": "Fastq files", "required": "true", "paired": "true", "type": "Array[File]", "extension": [".fq.gz", ".fastq.gz"], "description": "Choose list of paired gzipped fastq files both left and right [.fq.gz or .fastq.gz]"}'
         variant3_input_genes: '{"index": 5, "name": "Genes names", "type": "String", "groupname": "gene_panel", "description": "Enter gene names to narrow your search/analysis results (separate gene names with comma, for example: HTT, FBN1)"}'
         variant3_input_genome_or_exome: '{"hidden":"true", "name": "Sample type", "type": "String", "default": "genome", "constraints": {"values": ["exome", "genome"]}, "description": "Select exome or genome (refers to the input sample)"}'
         variant3_input_run_sv_calling: '{"hidden":"true", "name": "Run SV calling", "type": "Boolean", "default": false, "description": "Select if run SV calling"}'
@@ -55,21 +57,41 @@ workflow germline {
         variant4_name: 'WGS demo ACMG report'
         variant4_description: 'Demo: identifies pathogenic variants (according to the ACMG classification); generates full clinical report; for whole genome sequencing data (WGS).'
 
+        variant4_input_fastqs: '{"index": 2, "name": "Fastq files", "required": "true", "paired": "true", "type": "Array[File]", "extension": [".fq.gz", ".fastq.gz"], "description": "Choose list of paired gzipped fastq files both left and right [.fq.gz or .fastq.gz]"}'
         variant4_input_genes: '{"index": 5, "name": "Genes names", "type": "String", "groupname": "gene_panel", "default": "GNE", "description": "Enter gene names to narrow your search/analysis results (separate gene names with comma, for example: HTT, FBN1)"}'
         variant4_input_genome_or_exome: '{"hidden":"true", "name": "Sample type", "type": "String", "default": "genome", "constraints": {"values": ["exome", "genome"]}, "description": "Select exome or genome (refers to the input sample)"}'
         variant4_input_run_sv_calling: '{"hidden":"true", "name": "Run SV calling", "type": "Boolean", "default": false, "description": "Select if run SV calling"}'
         variant4_input_kit: '{"index": 8, "hidden":"true", "name": "Kit", "type": "Array[String]", "default": "genome", "constraints": {"values": ["genome", "exome-v6", "exome-v7"], "multiselect": false}, "description": "Choose comprehensive exome kit from exome-v6 for Agilent SureSelect Human All Exon V6 or exome-v7 for Agilent SureSelect Human All Exon V7"}'
         variant4_input_interval_list: '{"index": 9, "advanced":"true", "name": "Intervals", "type": "File", "extension": [".interval_list"], "description": "List of genomic intervals"}'
 
-        input_sample_id: '{"index": 1, "name": "Sample id", "type": "String", "default": "no_id_provided", "description": "Enter a sample name (or identifier)"}'
-        input_fastqs: '{"index": 2, "name": "Fastq files", "required": "true", "paired": "true", "type": "Array[File]", "extension": [".fq.gz", ".fastq.gz"], "description": "Choose list of paired gzipped fastq files both left and right [.fq.gz or .fastq.gz]"}'
+        variant5_name: 'Germline unreleased'
+        variant5_description: 'Demo: identifies pathogenic variants (according to the ACMG classification); generates full clinical report; for whole genome sequencing data (WGS).'
+
+        variant5_input_fastqs: '{"index": 2, "name": "Fastq files", "paired": "true", "type": "Array[File]", "extension": [".fq.gz", ".fastq.gz"], "description": "Choose list of paired gzipped fastq files both left and right [.fq.gz or .fastq.gz]"}'
+        variant5_input_genes: '{"index": 5, "name": "Genes names", "type": "String", "groupname": "gene_panel", "default": "GNE", "description": "Enter gene names to narrow your search/analysis results (separate gene names with comma, for example: HTT, FBN1)"}'
+        variant5_input_genome_or_exome: '{"name": "Sample type", "type": "String", "default": "exome", "constraints": {"values": ["exome", "genome"]}, "description": "Select exome or genome (refers to the input sample)"}'
+        variant5_input_run_sv_calling: '{"name": "Run SV calling", "type": "Boolean", "default": false, "description": "Select if run SV callung"}'
+        variant5_input_kit: '{"index": 8, "advanced":"true", "name": "Kit", "type": "Array[String]", "default": "exome-v7", "constraints": {"values": ["exome-v6", "exome-v7"], "multiselect": false}, "description": "Choose comprehensive exome kit from exome-v6 for Agilent SureSelect Human All Exon V6 or exome-v7 for Agilent SureSelect Human All Exon V7"}'
+        variant5_input_interval_list: '{"index": 9, "hidden":"true", "name": "Intervals", "type": "File", "extension": [".interval_list"], "description": "List of genomic intervals"}'
+
+        variant5_input_panel_sequencing: '{"index": 16, "advanced":"true", "name": "Is it panel sequencing?", "type": "Boolean", "default": false, "description": "Set as true for panel sequencing experiment, which will turn off frequency and snpEff effect filtering"}'
+        variant5_input_bam: '{"index": 14, "advanced":"true", "name": "Bam", "type": "File", "extension": [".bam"], "description": "Provide bam file if you would like to start analysis from variant calling"}'
+        variant5_input_bam_bai: '{"index": 15, "advanced":"true", "name": "Bai", "type": "File", "extension": [".bai"], "description": "Bai for provided bam file if you would like to start analysis from variant calling"}'
+
+        variant5_input_add_bam_filter: '{"advanced":"true", "name": "Add bam filter?", "type": "Boolean", "default": "true", "description": "This option decides whether to apply bam filtering on contamination. Default: true"}'
+        variant5_input_mismatch_threshold: '{"advanced":"true", "name": "Mismatch threshold", "type": "Float", "constraints": {"min": "0.0", "max": "1.0"}, "default": "0.1", "description": "Reads with fraction of mismatches greater than or equal this value are discarded"}'
+
+
+
+        input_sample_id: '{"index": 1, "name": "Sample id", "type": "String", "description": "Enter a sample name (or identifier)"}'
+
         input_fastqs_left: '{"hidden":"true", "name": "First (left) fastq files", "type": "Array[File]", "extension": [".fq.gz", ".fastq.gz"], "description": "Choose first (left) fastq files"}'
         input_fastqs_right: '{"hidden":"true", "name": "Second (right) fastq files", "type": "Array[File]", "extension": [".fq.gz", ".fastq.gz"], "description": "Choose second (right) fastq files"}'
 
         input_hpo_terms: '{"index": 3, "name": "HPO terms", "type": "String", "groupname": "gene_panel", "description": "Enter HPO terms to narrow your search/analysis results (separate HPO terms with comma, for example: HP:0004942, HP:0011675)"}'
         input_diseases: '{"index": 4, "name": "Diseases", "type": "String", "groupname": "gene_panel","description": "Enter disease names to narrow your search/analysis results (separate diseases names with comma; each disease name should be just a keyword, for example for Marfan Syndrome only Marfan should be written, for Ehlers-Danlos Syndrome: Ehlers-Danlos; other proper diseases names for example: Osteogenesis imperfecta, Tay-sachs, Hemochromatosis, Brugada, Canavan, etc.)"}'
         input_phenotypes_description: '{"index": 12, "name": "Description of patient phenotypes", "type": "String", "groupname": "gene_panel", "description": "Enter description of patient phenotypes"}'
-        input_panel_names: '{"index": 13, "name": "Gene panel", "type": "Array[String]", "groupname": "gene_panel", "description": "Select gene panels", "constraints": {"values": ["None", "ACMG_Incidental_Findings", "COVID-19_research", "Cancer_Germline", "Cardiovascular_disorders", "Ciliopathies", "Dermatological_disorders", "Dysmorphic_and_congenital_abnormality_syndromes", "Endocrine_disorders", "Gastroenterological_disorders", "Growth_disorders", "Haematological_and_immunological_disorders", "Haematological_disorders", "Hearing_and_ear_disorders", "Metabolic_disorders", "Neurology_and_neurodevelopmental_disorders", "Ophthalmological_disorders", "Rare_Diseases", "Renal_and_urinary_tract_disorders", "Respiratory_disorders", "Rheumatological_disorders", "Skeletal_disorders", "Tumour_syndromes"], "multiselect": true}}'
+        input_panel_names: '{"index": 13, "name": "Gene panel", "type": "Array[String]", "groupname": "gene_panel", "description": "Select gene panels", "constraints": {"values": ["ACMG_Incidental_Findings", "COVID-19_research", "Cancer_Germline", "Cardiovascular_disorders", "Ciliopathies", "Dermatological_disorders", "Dysmorphic_and_congenital_abnormality_syndromes", "Endocrine_disorders", "Gastroenterological_disorders", "Growth_disorders", "Haematological_and_immunological_disorders", "Haematological_disorders", "Hearing_and_ear_disorders", "Metabolic_disorders", "Neurology_and_neurodevelopmental_disorders", "Ophthalmological_disorders", "Rare_Diseases", "Renal_and_urinary_tract_disorders", "Respiratory_disorders", "Rheumatological_disorders", "Skeletal_disorders", "Tumour_syndromes"], "multiselect": true}}'
 
         input_panel_json: '{"hidden":"true", "name": "Genes panel", "type": "File", "extension": [".json"], "description": "Add json file with genes panel to narrow your search/analysis results. You can prepare this file using workflow Gene panel generator"}'
         input_phenotypes_json: '{"hidden":"true", "name": "List of phenotypes names", "type": "File", "extension": [".json"], "description": "Add json file with phenotypes names used to generate gene panel. You can prepare this file using workflow Gene panel generator"}'
@@ -183,15 +205,16 @@ workflow germline {
     # AD filtering
     Float ad_binom_threshold = 0.01
     Boolean apply_ad_filter = false
+    Boolean panel_sequencing = false
 
     # IGV (make something much larger if pictures in report are not fully loaded)
     Int waiting_time = 10000
 
     String pipeline_name = "germline"
-    String pipeline_version = "1.7.3"
+    String pipeline_version = "1.8.3"
 
     # 1. Prepare gene panel or use user defined
-    # if(is_input_for_panel_generate_defined && !is_panel_json_defined) {
+    #if(is_input_for_panel_generate_defined && !is_panel_json_defined) {
     #    call panel_generate_task.panel_generate {
     #        input:
     #            sample_id = sample_id,
@@ -204,13 +227,13 @@ workflow germline {
     #}
 
     # Use acmg gene panel if panel and panels inputs are not defined
-    #if(!is_input_for_panel_generate_defined && !is_panel_json_defined) {
+    # if(!is_input_for_panel_generate_defined && !is_panel_json_defined) {
     #    call panel_generate_task.panel_generate as panel_generate_acmg_panel {
     #        input:
     #            sample_id = sample_id,
     #            panel_names = ["acmg-recommendation-panel"]
     #    }
-    #}
+    # }
 
     # File gene_panel_json = select_first([panel_json, panel_generate.panel, panel_generate_acmg_panel.panel])
     # File gene_phenotypes_json = select_first([phenotypes_json, panel_generate.phenotypes, panel_generate_acmg_panel.phenotypes])
@@ -282,7 +305,7 @@ workflow germline {
     }
 
     # 8. Filter variants
-    #call vcf_var_filter_module.vcf_var_filter {
+    # call vcf_var_filter_module.vcf_var_filter {
     #    input:
     #        vcf_gz = bam_varcalling.vcf_gz,
     #        vcf_gz_tbi = bam_varcalling.vcf_gz_tbi,
@@ -291,17 +314,18 @@ workflow germline {
     #        apply_ad_filter = apply_ad_filter,
     #        ad_binom_threshold = ad_binom_threshold,
     #        analysis_type = genome_or_exome
-    #}
+    # }
 
     # 9. Annotate and filter variants
-    #call vcf_anno_module.vcf_anno {
+    # call vcf_anno_module.vcf_anno {
     #    input:
     #        vcf_gz = vcf_var_filter.filtered_vcf_gz,
     #        vcf_gz_tbi = vcf_var_filter.filtered_vcf_gz_tbi,
     #        vcf_anno_freq_genome_or_exome = genome_or_exome,
     #        gnomad_coverage_genome_or_exome = genome_or_exome,
-    #        vcf_basename = sample_id
-    #}
+    #        vcf_basename = sample_id,
+    #        panel_sequencing = panel_sequencing
+    # }
 
     # 10. Annotate variants acroding to ACMG recomendation
     # call vcf_acmg_report_module.vcf_acmg_report {
@@ -320,15 +344,15 @@ workflow germline {
     #        other_bais = other_bais,
     #        sample_id = sample_id,
     #        genome_or_exome = genome_or_exome
-    #}
+    # }
 
     # 11. Call structural variants
-    #if (add_snp_data_to_sv) {
+    # if (add_snp_data_to_sv) {
     #    File? vcf_to_sv = vcf_var_filter.filtered_vcf_gz
     #    File? vcf_tbi_to_sv = vcf_var_filter.filtered_vcf_gz_tbi
-    #}
+    # }
 
-    #if(genome_or_exome == "genome" && run_sv_calling) {
+    # if(genome_or_exome == "genome" && run_sv_calling) {
 
     #    call sv_calling_module.sv_calling {
     #        input:
@@ -345,7 +369,7 @@ workflow germline {
     #            gene_panel = gene_panel_json,
     #            sample_id = sample_id
     #    }
-    #}
+    # }
 
     # 12. Estimate detection chance
     # call detection_chance_module.detection_chance {
@@ -394,20 +418,16 @@ workflow germline {
     # Array[File] stdout_module = select_all([panel_generate.stdout_log, panel_generate_acmg_panel.stdout_log, resources_kit.stdout_log,  fq_organize.stdout_log, fq_qc.stdout_log, fq_bwa_align.stdout_log, bam_filter_contam.stdout_log, bam_varcalling.stdout_log, vcf_var_filter.stdout_log, vcf_anno.stdout_log, vcf_acmg_report.stdout_log, sv_calling.stdout_log, sex_check.stdout_log, detection_chance.stdout_log])
     # Array[File] stderr_module = select_all([panel_generate.stderr_log, panel_generate_acmg_panel.stderr_log, resources_kit.stderr_log, fq_organize.stderr_log, fq_qc.stderr_log, fq_bwa_align.stderr_log, bam_filter_contam.stderr_log, bam_varcalling.stderr_log, vcf_var_filter.stderr_log, vcf_anno.stderr_log, vcf_acmg_report.stderr_log, sv_calling.stderr_log, sex_check.stderr_log, detection_chance.stderr_log])
 
-    # call bco_merge_task.bco_merge as bco_merge_pipeline {
-    #    input:
-    #        bco_array = bcos_module,
-    #        stdout_array = stdout_module,
-    #        stderr_array = stderr_module,
-    #        pipeline_name = pipeline_name,
-    #        pipeline_version = pipeline_version
-    #}
+  # call bco_module.bco {
+  #  input:
+  #    bco_array = bcos_module,
+  #    stdout_array = stdout_module,
+  #    stderr_array = stderr_module,
+  #    pipeline_name = pipeline_name,
+  #    pipeline_version = pipeline_version,
+  #    sample_id = sample_id
+  # }
 
-    # call report_bco_task.report_bco as report_bco_pipeline {
-    #    input:
-    #        sample_id = sample_id,
-    #        bco_json = bco_merge_pipeline.bco
-    # }
 
     output {
 
@@ -497,11 +517,17 @@ workflow germline {
         #    Array[File] all_reports_pdf = pdf_merge.all_reports_pdf
 
         # 16. Merge BCO and prepare report pdf
-        # File bco = bco_merge_pipeline.bco
-        # File bco_report_html = report_bco_pipeline.bco_report_html
-        # File bco_report_pdf = report_bco_pipeline.bco_report_pdf
-        # File stdout_log = bco_merge_pipeline.stdout_log
-        # File stderr_log = bco_merge_pipeline.stderr_log
+        #bco, stdout, stderr
+        # File bco_merged = bco.bco_merged
+        # File stdout_log = bco.stdout_log
+        # File stderr_log = bco.stderr_log
+
+        #bco report (pdf, odt, docx, html)
+        # File bco_report_pdf = bco.bco_report_pdf
+        # File bco_report_html = bco.bco_report_html
+
+        #bco table (csv)
+        # File bco_table_csv = bco.bco_table_csv
 
     }
 }
