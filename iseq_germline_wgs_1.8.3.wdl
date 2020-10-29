@@ -263,12 +263,13 @@ workflow germline {
         Array[File] fastqs_2 = select_first([fq_organize.fastqs_2, fastqs_right])
 
         # 4. Check quality of fastq files
-        call fq_qc_module.fq_qc {
-            input:
-                sample_id = sample_id,
-                fastqs_left = fastqs_1,
-                fastqs_right = fastqs_2
-        }
+        
+        # call fq_qc_module.fq_qc {
+        #    input:
+        #        sample_id = sample_id,
+        #        fastqs_left = fastqs_1,
+        #        fastqs_right = fastqs_2
+        # }
 
         # 5. Align reads
         call fq_bwa_align_module.fq_bwa_align {
@@ -432,10 +433,10 @@ workflow germline {
     output {
 
         # 4. Check quality of fastq files
-        Array[File]? fastqc_1_zips = fq_qc.fastqc_1_zips
-        Array[File]? fastqc_2_zips = fq_qc.fastqc_2_zips
-        File? quality_check_pdf = fq_qc.quality_check_report_pdf
-        File? quality_check_html = fq_qc.quality_check_report_html
+        # Array[File]? fastqc_1_zips = fq_qc.fastqc_1_zips
+        # Array[File]? fastqc_2_zips = fq_qc.fastqc_2_zips
+        # File? quality_check_pdf = fq_qc.quality_check_report_pdf
+        # File? quality_check_html = fq_qc.quality_check_report_html
 
         # 5./6. Align (and filter) bam files
         File? final_bam = bam_to_var_calling
